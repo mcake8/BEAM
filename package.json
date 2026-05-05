@@ -1,17 +1,31 @@
 {
-  "name": "BEAM",
-  "type": "module",
-  "private": true,
-  "scripts": {
-    "build": "nuxt build",
-    "dev": "nuxt dev",
-    "generate": "nuxt generate",
-    "preview": "nuxt preview",
-    "postinstall": "nuxt prepare"
-  },
-  "dependencies": {
-    "nuxt": "^4.4.4",
-    "vue": "^3.5.33",
-    "vue-router": "^5.0.6"
-  }
+	"name": "BEAM",
+	"type": "module",
+	"private": true,
+	"scripts": {
+		"build": "nuxt build",
+		"dev": "nuxt dev",
+		"generate": "nuxt generate",
+		"preview": "nuxt preview",
+		"postinstall": "nuxt prepare",
+		"test": "vitest",
+		"lint": "eslint .",
+		"lint:fix": "eslint . --fix"
+	},
+	"dependencies": {
+		"embla-carousel-vue": "^8.6.0",
+		"nuxt": "^4.4.4",
+		"vue": "^3.5.33",
+		"vue-router": "^5.0.6"
+	},
+	"devDependencies": {
+		"@nuxt/eslint": "^1.15.2",
+		"@nuxt/test-utils": "^4.0.3",
+		"@vue/test-utils": "^2.4.10",
+		"eslint": "^9.39.4",
+		"happy-dom": "^20.9.0",
+		"playwright-core": "^1.59.1",
+		"sass": "^1.99.0",
+		"vitest": "^4.1.5"
+	}
 }

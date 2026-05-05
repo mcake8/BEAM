@@ -1,0 +1,11 @@
+.container {
+	width: 100%;
+	max-width: calc(var(--container-width) + var(--container-padding) * 2);
+	margin-inline: auto;
+	padding: var(--container-padding);
+	min-height: 100dvh;
+}
+
+.visually-hidden {
+	@include visually-hidden;
+}
