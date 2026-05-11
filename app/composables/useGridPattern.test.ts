@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { useGridPattern } from '../composables/useGridPattern'
+import { useGridPattern } from '@/composables/useGridPattern'
 
 describe('useGridPattern', () => {
 	const { getColSpan } = useGridPattern()

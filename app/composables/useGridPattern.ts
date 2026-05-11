@@ -12,7 +12,8 @@ const colPattern = [
 ]
 
 export const useGridPattern = () => {
-	const getColSpan = (index: number): number => colPattern[index] ?? COL.LARGE
+	const getColSpan = (index: number): number =>
+		colPattern[index % colPattern.length] ?? COL.LARGE
 
 	return { getColSpan }
 }

@@ -7,7 +7,6 @@
 - Nuxt 4
 - Vue 3
 - SCSS
-- Embla-carousel
 - Vitest
 - ESLint
 
