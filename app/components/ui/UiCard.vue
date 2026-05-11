@@ -1,5 +1,5 @@
 <template>
-	<article
+	<div
 		class="ui-card"
 		:class="{ 'ui-card--overlay': overlay }"
 	>
@@ -24,7 +24,7 @@
 		>
 			<slot name="footer" />
 		</div>
-	</article>
+	</div>
 </template>
 
 <script setup lang="ts">
