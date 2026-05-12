@@ -77,7 +77,6 @@ const { swipeHandlers } = useSwipe({ onNext: next, onPrev: prev })
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		padding: 48px 32px 80px;
 		opacity: 0;
 		transition: opacity var(--swipe-duration);
 		pointer-events: none;

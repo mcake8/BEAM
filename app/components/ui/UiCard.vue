@@ -44,6 +44,11 @@ withDefaults(defineProps<Props>(), {
 	width: 100%;
 	height: 100%;
 	background: var(--color-surface);
+	transition-duration: var(--transition-duration);
+
+	@include hover {
+		background-color: var(--color-surface-2);
+	}
 
 	&__media,
 	&__content,
@@ -62,11 +67,15 @@ withDefaults(defineProps<Props>(), {
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
-		padding: 32px;
+		padding: 0 0 44px 32px;
 		z-index: 2;
 		pointer-events: none;
 		color: var(--color-primary);
 		transition: color var(--transition-duration);
+
+		@include mobile {
+			padding: 0 0 44px 24px;
+		}
 
 		&--light {
 			color: var(--color-surface-2);
@@ -76,7 +85,7 @@ withDefaults(defineProps<Props>(), {
 	&__footer {
 		align-self: end;
 		justify-self: center;
-		margin-bottom: 32px;
+		margin-bottom: 24px;
 		z-index: 3;
 		pointer-events: none;
 	}

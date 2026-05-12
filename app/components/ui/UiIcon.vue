@@ -23,6 +23,8 @@ const props = withDefaults(defineProps<Props>(), {
 .ui-icon {
 	@include flex-center(true);
 
+	color: var(--color-primary);
+
 	flex-shrink: 0;
 
 	width: v-bind('props.size + "px"');

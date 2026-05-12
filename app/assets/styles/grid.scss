@@ -5,6 +5,8 @@
 	grid-template-columns: repeat(12, 1fr);
 	border-top: var(--border-primary);
 	border-left: var(--border-primary);
+	border-radius: 0 0 12px 12px;
+	overflow: hidden;
 
 	@include laptop {
 		grid-template-columns: repeat(2, 1fr);

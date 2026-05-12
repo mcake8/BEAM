@@ -39,24 +39,22 @@ const products = [
 </script>
 
 <template>
-	<div class="container">
-		<div class="grid">
-			<div
-				v-for="(product, index) in products"
-				:key="product.id"
-				:class="`col-${getColSpan(index)}`"
-			>
-				<ProductCard
-					:name="product.name"
-					:price="4600"
-					:images="[
-						'/images/chair-1.png',
-						'/images/chair-2.jpg',
-						'/images/chair-3.jpg',
-						'/images/chair-4.jpg'
-					]"
-				/>
-			</div>
+	<div class="grid">
+		<div
+			v-for="(product, index) in products"
+			:key="product.id"
+			:class="`col-${getColSpan(index)}`"
+		>
+			<ProductCard
+				:name="product.name"
+				:price="4600"
+				:images="[
+					'/images/chair-1.png',
+					'/images/chair-2.jpg',
+					'/images/chair-3.jpg',
+					'/images/chair-4.jpg'
+				]"
+			/>
 		</div>
 	</div>
 </template>

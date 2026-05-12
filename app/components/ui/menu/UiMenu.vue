@@ -2,13 +2,21 @@
 	<Transition name="menu">
 		<div
 			v-if="isOpen && anchor"
-			ref="menuRef"
-			class="ui-menu"
-			:style="styles"
+			class="ui-menu-portal"
 		>
-			<ul class="ui-menu__list">
-				<slot />
-			</ul>
+			<div
+				class="ui-menu__backdrop"
+				@click="emit('close')"
+			/>
+			<div
+				ref="menuRef"
+				class="ui-menu"
+				:style="styles"
+			>
+				<ul class="ui-menu__list">
+					<slot />
+				</ul>
+			</div>
 		</div>
 	</Transition>
 </template>
@@ -18,6 +26,32 @@ const props = defineProps<{
 	isOpen: boolean
 	anchor: HTMLElement | ComponentPublicInstance | null
 }>()
+
+const emit = defineEmits<{ close: [] }>()
+
+watch(
+	() => props.isOpen,
+	open => {
+		if (import.meta.server) return
+		document.documentElement.classList.toggle('is-lock', open)
+	}
+)
+
+onUnmounted(() => {
+	if (import.meta.client) {
+		document.documentElement.classList.remove('is-lock')
+	}
+})
+
+const onKeydown = (event: KeyboardEvent) => {
+	if (event.key === 'Escape' && props.isOpen) {
+		emit('close')
+	}
+}
+
+onMounted(() => window.addEventListener('keydown', onKeydown))
+
+onUnmounted(() => window.removeEventListener('keydown', onKeydown))
 
 const menuRef = ref<HTMLElement | null>(null)
 
@@ -75,9 +109,20 @@ watch([() => props.isOpen, () => props.anchor], async ([open]) => {
 	transition: opacity var(--transition-duration);
 }
 
-.menu-enter-from,
-.menu-leave-to {
+.menu-enter-active .ui-menu,
+.menu-leave-active .ui-menu {
+	transition: opacity var(--transition-duration);
+}
+
+.menu-enter-from .ui-menu,
+.menu-leave-to .ui-menu {
 	opacity: 0;
+}
+
+.ui-menu__backdrop {
+	position: fixed;
+	inset: 0;
+	z-index: 99;
 }
 
 .ui-menu {
@@ -89,5 +134,6 @@ watch([() => props.isOpen, () => props.anchor], async ([open]) => {
 	backdrop-filter: blur(10px);
 	min-width: 210px;
 	z-index: 100;
+	will-change: opacity;
 }
 </style>

@@ -56,7 +56,6 @@
 				/>
 			</div>
 			<div
-				ref="wrapperRef"
 				style="width: fit-content"
 				:style="{ marginLeft: anchorOffset + 'px' }"
 			>
@@ -72,6 +71,7 @@
 				<UiMenu
 					:is-open="isOpen"
 					:anchor="anchorRef"
+					@close="closeMenu"
 				>
 					<UiMenuItem href="http://t.me/hellrainx">
 						<template #icon>
@@ -157,8 +157,6 @@ const isOpen = ref(false)
 const activeDark = ref(0)
 const activeLight = ref(0)
 
-// Обёртка нужна для закрытия меню по клику снаружи
-const wrapperRef = ref<HTMLElement | null>(null)
 // Якорь для меню
 const anchorRef = ref<HTMLElement | null>(null)
 //
@@ -171,8 +169,6 @@ const toggleMenu = () => {
 const closeMenu = () => {
 	isOpen.value = false
 }
-
-useClickOutside(wrapperRef, closeMenu)
 </script>
 
 <style lang="scss">

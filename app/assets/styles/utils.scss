@@ -2,7 +2,8 @@
 	width: 100%;
 	max-width: calc(var(--container-width) + var(--container-padding) * 2);
 	margin-inline: auto;
-	padding: var(--container-padding);
+	padding-inline: var(--container-padding);
+	padding-bottom: 58px;
 	min-height: 100dvh;
 }
 
