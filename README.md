@@ -1,17 +1,49 @@
 # BEAM
 
-Бэкенд интернет-каталога мебели на **Nuxt 4 (Nitro)** с базой данных, загрузкой изображений и админскими методами.
+Интернет-магазин мебели ручной работы: фронтенд на **Nuxt 4 / Vue 3** + серверный API (**Nitro**) с каталогом, загрузкой изображений и админскими методами.
 
 ## Стек
 
-- **Nuxt 4 / Nitro** — фреймворк и серверный движок (`server/`)
-- **PostgreSQL + Drizzle ORM** — база данных и миграции
-- **MinIO / S3** — хранилище изображений (публичный bucket)
-- **zod** — валидация запросов
+**Фронтенд**
+- Nuxt 4 / Vue 3
+- SCSS
+- Embla-carousel
+- Vitest, ESLint
+
+**Бэкенд**
+- Nuxt 4 / Nitro — серверный движок (`server/`)
+- PostgreSQL + Drizzle ORM — база данных и миграции
+- MinIO / S3 — хранилище изображений (публичный bucket)
+- zod — валидация запросов
 - Авторизация — нативная: сессия через h3 `useSession` (зашифрованная HttpOnly-кука), хеш пароля через `node:crypto` (scrypt)
 - Документация API — встроенный в Nitro OpenAPI + Scalar
 
-## Структура
+## Быстрый старт
+
+```bash
+# 1. зависимости
+npm install
+
+# 2. переменные окружения (для бэкенда)
+cp .env.example .env        # при необходимости отредактируйте значения
+
+# 3. инфраструктура (postgres + minio в Docker)
+npm run db:up
+
+# 4. таблицы и тестовые данные
+npm run migrate
+npm run seed
+
+# 5. dev-сервер на http://localhost:3000
+npm run dev
+```
+
+- Документация API (Scalar): `http://localhost:3000/_scalar`
+- OpenAPI-спека: `http://localhost:3000/_openapi.json`
+- Консоль MinIO: `http://localhost:9001` (логин/пароль из `.env`)
+- Админ-пароль для `login` — значение `ADMIN_PASSWORD` из `.env`
+
+## Структура (бэкенд)
 
 ```
 server/
@@ -31,37 +63,14 @@ BEAM.postman_collection.json
 
 Роуты тонкие: `defineRouteMeta` (OpenAPI) + валидация (zod) + вызов сервиса. Вся логика и работа с БД — в `services/`; защита админских мутаций — в обёртке `defineApiHandler` (`{ admin: true }`). Серверные импорты идут через алиас `~~/server/...` и `~~/shared/...` (без относительных путей).
 
-## Быстрый старт
-
-```bash
-# 1. переменные окружения
-cp .env.example .env        # при необходимости отредактируйте значения
-
-# 2. зависимости
-npm install
-
-# 3. инфраструктура (postgres + minio в Docker)
-npm run db:up
-
-# 4. таблицы и тестовые данные
-npm run migrate
-npm run seed
-
-# 5. dev-сервер на http://localhost:3000
-npm run dev
-```
-
-- Документация API (Scalar): `http://localhost:3000/_scalar`
-- OpenAPI-спека: `http://localhost:3000/_openapi.json`
-- Консоль MinIO: `http://localhost:9001` (логин/пароль из `.env`)
-- Админ-пароль для `login` — значение `ADMIN_PASSWORD` из `.env`
-
 ## npm-скрипты
 
 | Скрипт | Назначение |
 |---|---|
 | `npm run dev` | dev-сервер |
 | `npm run build` / `npm run preview` | прод-сборка / локальный предпросмотр |
+| `npm run test` | юнит-тесты (Vitest) |
+| `npm run lint` / `npm run lint:fix` | ESLint |
 | `npm run db:up` | поднять postgres + minio (`db.docker-compose.yaml`) |
 | `npm run db:down` | остановить и удалить инфраструктуру |
 | `npm run db:generate` | сгенерировать SQL-миграцию из изменений схемы |
