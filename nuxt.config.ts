@@ -38,7 +38,7 @@ export default defineNuxtConfig({
 		'~/assets/styles/global.scss',
 		'~/assets/styles/utils.scss',
 		'~/assets/styles/variables.scss',
-		'~/assets/styles/grid.scss'
+		'~/assets/styles/grid.scss',
 	],
 
 	vite: {
@@ -46,9 +46,32 @@ export default defineNuxtConfig({
 			preprocessorMaxWorkers: true,
 			preprocessorOptions: {
 				scss: {
-					additionalData: '@use "~/assets/styles/helpers/index.scss" as *;'
-				}
-			}
-		}
-	}
+					additionalData: '@use "~/assets/styles/helpers/index.scss" as *;',
+				},
+			},
+		},
+	},
+
+	runtimeConfig: {
+		databaseUrl: process.env.DATABASE_URL || '',
+		authSecret: process.env.AUTH_SECRET || '',
+		s3Endpoint: process.env.S3_ENDPOINT || '',
+		s3PublicUrl: process.env.S3_PUBLIC_URL || '',
+		s3Bucket: process.env.S3_BUCKET || '',
+		s3AccessKey: process.env.S3_ACCESS_KEY || '',
+		s3SecretKey: process.env.S3_SECRET_KEY || '',
+	},
+
+	nitro: {
+		experimental: {
+			openAPI: true,
+		},
+		openAPI: {
+			meta: {
+				title: 'BEAM Catalog API',
+				description: 'Public catalog endpoints and admin CRUD for the BEAM furniture store.',
+				version: '1.0.0',
+			},
+		},
+	},
 })

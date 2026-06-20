@@ -1,6 +1,15 @@
 {
   // https://nuxt.com/docs/guide/concepts/typescript
   "files": [],
+  // Path aliases for standalone scripts run via tsx (migrate/seed) — Nuxt/Nitro
+  // resolve ~~ on their own, but tsx reads these from the root tsconfig.
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "~~/*": ["./*"],
+      "~/*": ["./app/*"]
+    }
+  },
   "references": [
     {
       "path": "./.nuxt/tsconfig.app.json"

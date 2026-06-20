@@ -1,0 +1,233 @@
+{
+  "info": {
+    "name": "BEAM Catalog API",
+    "description": "Manual testing collection for the BEAM catalog backend. Run top-to-bottom: login -> create category -> upload image -> create product -> get catalog. The session cookie set by Auth/Login is reused automatically by Postman.\n\nAll responses use the { ok, data } shape on success and { ok: false, error: { code, message } } on failure. The Create requests capture the new id from response.data into collection variables (categoryId/productId/contactId) so update/delete chain automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000" },
+    { "key": "adminPassword", "value": "change-me" },
+    { "key": "categoryId", "value": "1" },
+    { "key": "productId", "value": "1" },
+    { "key": "contactId", "value": "1" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Login",
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/auth/login", "host": ["{{baseUrl}}"], "path": ["api", "auth", "login"] },
+            "body": { "mode": "raw", "raw": "{\n  \"password\": \"{{adminPassword}}\"\n}" }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/auth/logout", "host": ["{{baseUrl}}"], "path": ["api", "auth", "logout"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Categories",
+      "item": [
+        {
+          "name": "List categories (public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api", "categories"] }
+          }
+        },
+        {
+          "name": "Create category (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const d = pm.response.json().data;",
+                  "if (d && d.categoryId) pm.collectionVariables.set('categoryId', d.categoryId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/categories", "host": ["{{baseUrl}}"], "path": ["api", "categories"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Стулья\",\n  \"images\": [{ \"src\": \"https://placehold.co/600x400\", \"alt\": \"Стулья\" }],\n  \"sortOrder\": 1\n}"
+            }
+          }
+        },
+        {
+          "name": "Update category (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api", "categories", "{{categoryId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"label\": \"Стулья (обновлено)\"\n}" }
+          }
+        },
+        {
+          "name": "Delete category (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/categories/{{categoryId}}", "host": ["{{baseUrl}}"], "path": ["api", "categories", "{{categoryId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Products",
+      "item": [
+        {
+          "name": "Get product by id (public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] }
+          }
+        },
+        {
+          "name": "Create product (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const d = pm.response.json().data;",
+                  "if (d && d.productId) pm.collectionVariables.set('productId', d.productId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/products", "host": ["{{baseUrl}}"], "path": ["api", "products"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"label\": \"Люнн\",\n  \"description\": \"Минималистичный стул из натурального дерева.\",\n  \"comment\": \"Нет в наличии, только на заказ\",\n  \"price\": 1000,\n  \"categoryId\": {{categoryId}},\n  \"previewImages\": [{ \"src\": \"https://placehold.co/600x400\", \"alt\": \"Люнн\" }],\n  \"variations\": [\n    {\n      \"id\": 1,\n      \"label\": \"Без покрытия\",\n      \"price\": 1000,\n      \"colors\": [{ \"id\": 1, \"label\": \"Белый\", \"images\": [{ \"src\": \"https://placehold.co/600x400\", \"alt\": \"Люнн белый\" }] }]\n    }\n  ]\n}"
+            }
+          }
+        },
+        {
+          "name": "Update product (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"price\": 1200\n}" }
+          }
+        },
+        {
+          "name": "Delete product (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/products/{{productId}}", "host": ["{{baseUrl}}"], "path": ["api", "products", "{{productId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Catalog",
+      "item": [
+        {
+          "name": "Get catalog (public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/catalog", "host": ["{{baseUrl}}"], "path": ["api", "catalog"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Contacts",
+      "item": [
+        {
+          "name": "List contacts (public)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/contacts", "host": ["{{baseUrl}}"], "path": ["api", "contacts"] }
+          }
+        },
+        {
+          "name": "Create contact (admin)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const d = pm.response.json().data;",
+                  "if (d && d.contactId) pm.collectionVariables.set('contactId', d.contactId);"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/contacts", "host": ["{{baseUrl}}"], "path": ["api", "contacts"] },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"icon\": { \"src\": \"https://placehold.co/64x64\", \"alt\": \"Telegram\" },\n  \"label\": \"Telegram\",\n  \"link\": \"https://t.me/beam\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Update contact (admin)",
+          "request": {
+            "method": "PUT",
+            "header": [{ "key": "Content-Type", "value": "application/json" }],
+            "url": { "raw": "{{baseUrl}}/api/contacts/{{contactId}}", "host": ["{{baseUrl}}"], "path": ["api", "contacts", "{{contactId}}"] },
+            "body": { "mode": "raw", "raw": "{\n  \"link\": \"https://t.me/beam_official\"\n}" }
+          }
+        },
+        {
+          "name": "Delete contact (admin)",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/contacts/{{contactId}}", "host": ["{{baseUrl}}"], "path": ["api", "contacts", "{{contactId}}"] }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Media",
+      "item": [
+        {
+          "name": "Upload image (admin)",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": { "raw": "{{baseUrl}}/api/media/upload", "host": ["{{baseUrl}}"], "path": ["api", "media", "upload"] },
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                { "key": "file", "type": "file", "src": [] },
+                { "key": "alt", "value": "Пример картинки", "type": "text" }
+              ]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
