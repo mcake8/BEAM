@@ -1,32 +1,34 @@
 <template>
-  <div class="catalog">
-    <template
+  <ul class="catalog">
+    <li
       v-for="item in catalog"
       :key="
         item.type === 'Category'
           ? `cat-${item.categoryId}`
           : `prod-${item.productId}`
       "
+      :class="
+        item.type === 'Category' ? 'catalog__category' : 'catalog__product'
+      "
     >
-      <div v-if="item.type === 'Category'" class="catalog__category">
-        <CategoryCard
-          :label="item.label"
-          :images="['/images/chair-transparent.png']"
-        />
-      </div>
-      <div v-else class="catalog__product">
-        <ProductCard
-          :label="item.label"
-          :price="item.price"
-          :images="[
-            '/images/chair-transparent.png',
-            '/images/chair-2.jpg',
-            '/images/chair-3.jpg'
-          ]"
-        />
-      </div>
-    </template>
-  </div>
+      <CategoryCard
+        v-if="item.type === 'Category'"
+        :label="item.label"
+        :images="['/images/chair-transparent.png']"
+      />
+
+      <ProductCard
+        v-else
+        :label="item.label"
+        :price="item.price"
+        :images="[
+          '/images/chair-transparent.png',
+          '/images/chair-2.jpg',
+          '/images/chair-3.jpg'
+        ]"
+      />
+    </li>
+  </ul>
 </template>
 
 <script setup lang="ts">
