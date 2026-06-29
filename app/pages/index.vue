@@ -1,79 +1,69 @@
-<script setup>
-import useEmblaCarousel from 'embla-carousel-vue'
-
-const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
-
-const goToPrev = () => emblaApi.value?.scrollPrev()
-const goToNext = () => emblaApi.value?.scrollNext()
-</script>
-
 <template>
-	<div class="container">
-		<div class="content">
-			<div class="product">
-				<h1 class="title">Люнн</h1>
-				<p class="description">Стул Пашки Дурова</p>
-
-				<div class="slider">
-					<div
-						ref="emblaRef"
-						class="slider__viewport"
-					>
-						<div class="slider__container">
-							<div
-								v-for="n in 3"
-								:key="n"
-								class="slide"
-							>
-								<img
-									src="/images/chair-1.png"
-									alt=""
-								/>
-								Slide {{ n }}
-							</div>
-						</div>
-					</div>
-
-					<button @click="goToPrev">←</button>
-					<button @click="goToNext">→</button>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="catalog">
+    <template
+      v-for="item in catalog"
+      :key="
+        item.type === 'Category'
+          ? `cat-${item.categoryId}`
+          : `prod-${item.productId}`
+      "
+    >
+      <div v-if="item.type === 'Category'" class="catalog__category">
+        <CategoryCard
+          :label="item.label"
+          :images="['/images/chair-transparent.png']"
+        />
+      </div>
+      <div v-else class="catalog__product">
+        <ProductCard
+          :label="item.label"
+          :price="item.price"
+          :images="[
+            '/images/chair-transparent.png',
+            '/images/chair-2.jpg',
+            '/images/chair-3.jpg'
+          ]"
+        />
+      </div>
+    </template>
+  </div>
 </template>
 
+<script setup lang="ts">
+  import type { ApiResponse, CatalogItem } from '#shared/types'
+
+  const { data } = await useFetch<ApiResponse<CatalogItem[]>>('/api/catalog')
+  const catalog = data.value?.ok ? data.value.data : []
+</script>
+
 <style lang="scss">
-.content {
-	border-radius: var(--border-radius-small);
-	background-color: #fff;
-	display: flex;
-	min-height: 100dvh;
-}
+  .catalog {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
 
-.product {
-	display: flex;
-	flex-direction: column;
-}
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
 
-.slider {
-	&__viewport {
-		overflow: hidden;
-	}
+    &__category {
+      grid-column: span 2;
+    }
 
-	&__container {
-		display: flex;
-		touch-action: pan-y pinch-zoom;
-	}
-}
+    &__product {
+      grid-column: span 1;
+    }
 
-.slide {
-	flex: 0 0 100%;
-	min-width: 0;
-	height: 300px;
-	background: #eee;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	user-select: none;
-}
+    @include laptop {
+      grid-template-columns: repeat(2, 1fr);
+
+      &__category,
+      &__product {
+        grid-column: span 1;
+      }
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
