@@ -1,109 +1,83 @@
 <template>
-	<div
-		class="ui-card"
-		:class="{ 'ui-card--overlay': overlay }"
-	>
-		<div
-			v-if="$slots.media"
-			class="ui-card__media"
-		>
-			<slot name="media" />
-		</div>
+  <div class="ui-card" :class="{ 'ui-card--overlay': overlay }">
+    <div v-if="$slots.media" class="ui-card__media">
+      <slot name="media" />
+    </div>
 
-		<div
-			v-if="$slots.default"
-			class="ui-card__content"
-			:class="{ 'ui-card__content--light': overlay }"
-		>
-			<slot />
-		</div>
-
-		<div
-			v-if="$slots.footer"
-			class="ui-card__footer"
-		>
-			<slot name="footer" />
-		</div>
-	</div>
+    <div
+      v-if="$slots.default"
+      class="ui-card__content"
+      :class="{ 'ui-card__content--light': overlay }"
+    >
+      <slot />
+    </div>
+  </div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-	overlay?: boolean
-}
-
-withDefaults(defineProps<Props>(), {
-	overlay: false
-})
+<script setup>
+  defineProps({
+    overlay: {
+      type: Boolean,
+      default: false
+    }
+  })
 </script>
 
 <style lang="scss">
-.ui-card {
-	position: relative;
-	display: grid;
-	width: 100%;
-	height: 100%;
-	background: var(--color-surface);
-	transition-duration: var(--transition-duration);
+  .ui-card {
+    position: relative;
+    height: 455px;
 
-	@include hover {
-		background-color: var(--color-surface-2);
-	}
+    background: var(--color-surface);
+    transition-duration: var(--transition-duration);
 
-	&__media,
-	&__content,
-	&__footer {
-		grid-area: 1 / 1;
-	}
+    @include mobile {
+      height: 380px;
+    }
 
-	&__media {
-		position: relative;
-	}
+    @include hover {
+      background-color: var(--color-surface-2);
+    }
 
-	&__content {
-		font-family: var(--font-family-secondary);
-		align-self: end;
-		justify-self: start;
-		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		padding: 0 0 44px 32px;
-		z-index: 2;
-		pointer-events: none;
-		color: var(--color-primary);
-		transition: color var(--transition-duration);
+    &__media {
+      user-select: none;
+      width: 100%;
+      height: 100%;
+    }
 
-		@include mobile {
-			padding: 0 0 44px 24px;
-		}
+    &__content {
+      position: absolute;
+      left: 32px;
+      bottom: 32px;
+      right: 32px;
+      z-index: 100;
 
-		&--light {
-			color: var(--color-surface-2);
-		}
-	}
+      @include mobile {
+        left: 24px;
+        bottom: 44px;
+      }
 
-	&__footer {
-		align-self: end;
-		justify-self: center;
-		margin-bottom: 24px;
-		z-index: 3;
-		pointer-events: none;
-	}
+      &--light {
+        color: var(--color-surface-2);
+      }
+    }
 
-	&::after {
-		content: '';
-		grid-area: 1 / 1;
-		align-self: end;
-		height: 50%;
-		background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
-		pointer-events: none;
-		z-index: 1;
-		opacity: 0;
-		transition: opacity var(--transition-duration-longer);
-	}
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 50%;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.5), transparent);
+      pointer-events: none;
+      z-index: 1;
+      opacity: 0;
+      transition: opacity var(--transition-duration-longer);
+    }
 
-	&--overlay::after {
-		opacity: 1;
-	}
-}
+    &--overlay::after {
+      opacity: 1;
+    }
+  }
 </style>

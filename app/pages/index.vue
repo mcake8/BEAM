@@ -1,45 +1,69 @@
 <template>
-	<div class="container">
-		<div class="content">
-			<div class="product">
-				<h1 class="title">Люнн</h1>
-				<p class="description">Стул Пашки Дурова</p>
-
-				<UiButton tablet-full-width>Заказать</UiButton>
-
-				<UiBullets
-					variant="dark"
-					:count="5"
-					:active="activeSlide"
-					@update:active="handleBulletClick"
-				/>
-			</div>
-		</div>
-	</div>
+  <div class="catalog">
+    <template
+      v-for="item in catalog"
+      :key="
+        item.type === 'Category'
+          ? `cat-${item.categoryId}`
+          : `prod-${item.productId}`
+      "
+    >
+      <div v-if="item.type === 'Category'" class="catalog__category">
+        <CategoryCard
+          :label="item.label"
+          :images="['/images/chair-transparent.png']"
+        />
+      </div>
+      <div v-else class="catalog__product">
+        <ProductCard
+          :label="item.label"
+          :price="item.price"
+          :images="[
+            '/images/chair-transparent.png',
+            '/images/chair-2.jpg',
+            '/images/chair-3.jpg'
+          ]"
+        />
+      </div>
+    </template>
+  </div>
 </template>
 
 <script setup lang="ts">
-const activeSlide = ref(0)
+  import type { ApiResponse, CatalogItem } from '#shared/types'
 
-const handleBulletClick = (value: number) => {
-	activeSlide.value = value
-}
+  const { data } = await useFetch<ApiResponse<CatalogItem[]>>('/api/catalog')
+  const catalog = data.value?.ok ? data.value.data : []
 </script>
 
-<style scoped lang="scss">
-.content {
-	border-radius: var(--border-radius-small);
-	background-color: var(--color-surface);
-	display: flex;
-	min-height: 100dvh;
-}
+<style lang="scss">
+  .catalog {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2px;
 
-.product {
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	gap: 20px;
-	width: 100%;
-}
+    border-radius: 0 0 12px 12px;
+    overflow: hidden;
+
+    &__category {
+      grid-column: span 2;
+    }
+
+    &__product {
+      grid-column: span 1;
+    }
+
+    @include laptop {
+      grid-template-columns: repeat(2, 1fr);
+
+      &__category,
+      &__product {
+        grid-column: span 1;
+      }
+    }
+
+    @include mobile {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>

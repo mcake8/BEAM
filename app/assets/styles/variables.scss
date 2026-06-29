@@ -1,38 +1,40 @@
 :root {
-	--container-width: #{fluid($container-desktop-width, $container-mobile-width)};
+  --container-width: #{fluid($container-desktop-width, $container-mobile-width)};
 
-	--container-padding: 40px;
+  --container-padding: 40px;
 
-	@include laptop-l {
-		--container-padding: 16px;
-	}
+  @include laptop-l {
+    --container-padding: 16px;
+  }
 
-	--color-primary: #333;
-	--color-secondary: #515151;
-	--color-text-muted: #5b5b5b;
-	--color-text-muted-2: #c9c9c9;
-	--color-surface: rgba(255, 255, 255, 0.9);
-	--color-surface-2: #fff;
-	--color-surface-3: #efeeed;
-	--color-accent: #000;
-	--color-smoke: #a6a6a4;
+  --header-max-height: 72px;
 
-	--color-border-primary: transparent;
-	--color-border-secondary: var(--color-accent);
+  --color-primary: #333;
+  --color-secondary: #515151;
+  --color-text-muted: #5b5b5b;
+  --color-text-muted-2: #c9c9c9;
+  --color-surface: rgba(255, 255, 255, 0.9);
+  --color-surface-2: #fff;
+  --color-surface-3: #efeeed;
+  --color-accent: #000;
+  --color-smoke: #a6a6a4;
 
-	--border-radius-big: 16px;
-	--border-radius-small: 12px;
+  --color-border-primary: transparent;
+  --color-border-secondary: var(--color-accent);
 
-	--border-primary: 1px solid var(--color-border-primary);
-	--border-secondary: 2px solid var(--color-border-secondary);
-	--border-menu-item: 1px solid var(--color-text-muted-2);
+  --border-radius-big: 16px;
+  --border-radius-small: 12px;
 
-	--box-shadow: 4px 4px 8px 0 rgba(33, 32, 20, 0.15);
+  --border-primary: 2px solid var(--color-border-primary);
+  --border-secondary: 2px solid var(--color-border-secondary);
+  --border-menu-item: 1px solid var(--color-text-muted-2);
 
-	--font-family-base: 'Liter', sans-serif;
-	--font-family-secondary: 'Geist Mono', sans-serif;
+  --box-shadow: 4px 4px 8px 0 rgba(33, 32, 20, 0.15);
 
-	--transition-duration: 0.2s;
-	--swipe-duration: 0.25s;
-	--transition-duration-longer: 0.4s;
+  --font-family-base: 'Liter', sans-serif;
+  --font-family-secondary: 'Geist Mono', sans-serif;
+
+  --transition-duration: 0.2s;
+  --swipe-duration: 0.25s;
+  --transition-duration-longer: 0.4s;
 }

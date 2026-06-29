@@ -1,4 +1,4 @@
-# BEAM
+~~# BEAM
 
 Интернет-магазин мебели ручной работы: фронтенд на **Nuxt 4 / Vue 3** + серверный API (**Nitro**) с каталогом, загрузкой изображений и админскими методами.
 
@@ -137,4 +137,4 @@ docker compose up --build
 
 ## Переменные окружения
 
-См. [.env.example](.env.example): `DATABASE_URL`, `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` (нужны docker-compose), `AUTH_SECRET` (≥32 символов), `ADMIN_PASSWORD`, `S3_ENDPOINT`, `S3_PUBLIC_URL`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`.
+См. [.env.example](.env.example): `DATABASE_URL`, `POSTGRES_USER` / `POSTGRES_PASSWORD` / `POSTGRES_DB` (нужны docker-compose), `AUTH_SECRET` (≥32 символов), `ADMIN_PASSWORD`, `S3_ENDPOINT`, `S3_PUBLIC_URL`, `S3_BUCKET`, `S3_ACCESS_KEY`, `S3_SECRET_KEY`.~~

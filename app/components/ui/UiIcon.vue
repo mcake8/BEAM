@@ -1,43 +1,32 @@
 <template>
-	<div
-		class="ui-icon"
-		:class="{ 'is-clickable': $attrs.onClick }"
-	>
-		<slot />
-	</div>
+  <div
+    class="ui-icon"
+    :class="{ 'is-clickable': $attrs.onClick }"
+    :style="{ '--size': size + 'px' }"
+  >
+    <slot />
+  </div>
 </template>
 
-<script setup lang="ts">
-interface Props {
-	size?: number
-	iconSize?: number
-}
-
-const props = withDefaults(defineProps<Props>(), {
-	size: 32,
-	iconSize: 24
-})
+<script setup>
+  defineProps({
+    size: {
+      type: Number,
+      default: 32
+    }
+  })
 </script>
 
 <style lang="scss">
-.ui-icon {
-	@include flex-center(true);
+  .ui-icon {
+    @include flex-center(true);
 
-	color: var(--color-primary);
+    color: var(--color-primary);
+    width: var(--size);
+    height: var(--size);
 
-	flex-shrink: 0;
-
-	width: v-bind('props.size + "px"');
-	height: v-bind('props.size + "px"');
-
-	&.is-clickable {
-		cursor: pointer;
-	}
-
-	:deep(svg),
-	:deep(.icon) {
-		width: v-bind('props.iconSize + "px"');
-		height: v-bind('props.iconSize + "px"');
-	}
-}
+    &.is-clickable {
+      cursor: pointer;
+    }
+  }
 </style>

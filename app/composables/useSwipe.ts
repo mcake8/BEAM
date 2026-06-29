@@ -1,49 +1,65 @@
-interface UseSwipeOptions {
-	onNext: () => void
-	onPrev: () => void
-	threshold?: number
+interface useSwipeProps {
+  onNext: () => void
+  onPrev: () => void
+  onGrabStart?: () => void
+  onGrabEnd?: () => void
+  threshold?: number
+  axis?: 'x' | 'y'
 }
 
-export function useSwipe({ onNext, onPrev, threshold = 30 }: UseSwipeOptions) {
-	let startX = 0
-	let isDragging = false
-	let hasMoved = false
+export function useSwipe({
+  onNext,
+  onPrev,
+  onGrabStart,
+  onGrabEnd,
+  threshold = 30,
+  axis = 'x'
+}: useSwipeProps) {
+  let start = 0
+  let isDragging = false
+  let hasMoved = false
 
-	const onPointerdown = (event: PointerEvent) => {
-		startX = event.clientX
-		isDragging = true
-		hasMoved = false
-	}
+  const clientCoord = (event: PointerEvent) =>
+    axis === 'y' ? event.clientY : event.clientX
 
-	const onPointermove = (event: PointerEvent) => {
-		if (!isDragging) return
-		if (Math.abs(event.clientX - startX) > 5) hasMoved = true
-	}
+  const onPointerdown = (event: PointerEvent) => {
+    start = clientCoord(event)
+    isDragging = true
+    hasMoved = false
+    onGrabStart?.()
+  }
 
-	const onPointerup = (event: PointerEvent) => {
-		if (!isDragging) return
-		isDragging = false
-		const diff = startX - event.clientX
-		if (!hasMoved || Math.abs(diff) < threshold) return
-		if (diff > 0) {
-			onNext()
-		} else {
-			onPrev()
-		}
-	}
+  const onPointermove = (event: PointerEvent) => {
+    if (!isDragging) return
+    if (Math.abs(clientCoord(event) - start) > 5) hasMoved = true
+  }
 
-	const onPointercancel = () => {
-		isDragging = false
-		hasMoved = false
-	}
+  const onPointerup = (event: PointerEvent) => {
+    if (!isDragging) return
+    isDragging = false
+    onGrabEnd?.()
+    const diff = start - clientCoord(event)
+    if (!hasMoved || Math.abs(diff) < threshold) return
+    if (diff > 0) {
+      onNext()
+    } else {
+      onPrev()
+    }
+  }
 
-	return {
-		swipeHandlers: {
-			onPointerdown,
-			onPointermove,
-			onPointerup,
-			onPointerleave: onPointercancel,
-			onPointercancel
-		}
-	}
+  const onPointercancel = () => {
+    isDragging = false
+    hasMoved = false
+    onGrabEnd?.()
+  }
+
+  return {
+    swipeHandlers: {
+      onPointerdown,
+      onPointermove,
+      onPointerup,
+      onPointerleave: onPointercancel,
+      onPointercancel
+    }
+  }
 }
